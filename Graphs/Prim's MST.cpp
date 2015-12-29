@@ -12,6 +12,14 @@ using namespace std;
 */
 typedef pair<int,int> EDGE;
 
+struct second_cmp
+{
+    bool operator() (const EDGE& l, const EDGE& r) const
+    {
+        return l.second < r.second;
+    }
+};
+
 /*
     Uses Prim's algorithm to obtain a MST. Assumes graph is connected.
 
@@ -25,22 +33,22 @@ vector< vector<EDGE> > prim(vector< vector<EDGE> >& graph)
     vector<int> score(v,INF);
     vector<int> pred(v,-1);
     vector<bool> visited(v,false);
-    set<EDGE> pq;
+    set<EDGE,second_cmp> pq;
     vector< vector<EDGE> > mst(v);
 
     // Initialize priority queue
     pq.insert(make_pair(0,0));
     score[0] = 0;
     for(int i=1; i<v; ++i)
-        pq.insert(make_pair(INF,i));
+        pq.insert(make_pair(i,INF));
 
     // Maintain the invariant
     while(!pq.empty())
     {
         EDGE x = *pq.begin();
         pq.erase(x);
-        int c = x.first;
-        int u = x.second;
+        int u = x.first;
+        int c = x.second;
         visited[u] = true;
         if(pred[u] != -1)
         {
@@ -55,10 +63,10 @@ vector< vector<EDGE> > prim(vector< vector<EDGE> >& graph)
             {
                 if(cost < score[w])
                 {
-                    pq.erase(make_pair(score[w],w));
+                    pq.erase(make_pair(w,score[w]));
                     score[w] = cost;
                     pred[w] = u;
-                    pq.insert(make_pair(score[w],w));
+                    pq.insert(make_pair(w,score[w]));
                 }
             }
         }
@@ -73,16 +81,16 @@ int main()
 
     // Define graph
     vector< vector< EDGE > > adj_list(4);
-    adj_list[0].push_back(make_pair(1,1));
-    adj_list[0].push_back(make_pair(2,3));
-    adj_list[1].push_back(make_pair(0,1));
-    adj_list[1].push_back(make_pair(2,1));
-    adj_list[1].push_back(make_pair(3,4));
-    adj_list[2].push_back(make_pair(0,3));
-    adj_list[2].push_back(make_pair(1,1));
-    adj_list[2].push_back(make_pair(3,1));
-    adj_list[3].push_back(make_pair(1,4));
-    adj_list[3].push_back(make_pair(2,1));
+    adj_list[0].push_back(make_pair(1,10));
+    adj_list[1].push_back(make_pair(0,10));
+    adj_list[0].push_back(make_pair(2,5));
+    adj_list[2].push_back(make_pair(0,5));
+    adj_list[1].push_back(make_pair(2,15));
+    adj_list[2].push_back(make_pair(1,15));
+    adj_list[3].push_back(make_pair(1,2));
+    adj_list[1].push_back(make_pair(3,2));
+    adj_list[3].push_back(make_pair(2,40));
+    adj_list[2].push_back(make_pair(3,40));
     
     // Run Prim's and get MST cost
     vector< vector<EDGE> > mst = prim(adj_list);
@@ -93,7 +101,7 @@ int main()
     mst_cost /= 2;
 
     // Check if the cost is correct
-    assert(mst_cost == 3);
+    assert(mst_cost == 17);
 
     return 0;
 }
