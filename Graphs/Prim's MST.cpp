@@ -16,7 +16,8 @@ struct second_cmp
 {
     bool operator() (const EDGE& l, const EDGE& r) const
     {
-        return l.second < r.second;
+        if(l.second != r.second) return l.second < r.second;
+        else return l.first < r.first;
     }
 };
 
@@ -37,10 +38,9 @@ vector< vector<EDGE> > prim(vector< vector<EDGE> >& graph)
     vector< vector<EDGE> > mst(v);
 
     // Initialize priority queue
-    pq.insert(make_pair(0,0));
     score[0] = 0;
-    for(int i=1; i<v; ++i)
-        pq.insert(make_pair(i,INF));
+    for(int i=0; i<v; ++i)
+        pq.insert(make_pair(i,score[i]));
 
     // Maintain the invariant
     while(!pq.empty())
@@ -50,7 +50,7 @@ vector< vector<EDGE> > prim(vector< vector<EDGE> >& graph)
         int u = x.first;
         int c = x.second;
         visited[u] = true;
-        if(pred[u] != -1)
+        if(u != 0)
         {
             mst[pred[u]].push_back(make_pair(u,c));
             mst[u].push_back(make_pair(pred[u],c));
