@@ -8,14 +8,8 @@ using namespace std;
 
 const int inf = 1000000000;
 const int max_v = 100000+5;
-vector< pair<int,int> > adj_list[max_v];
-int dist[max_v];
-int prev[max_v];
-stack<int> path;
 
-int V,E;
-
-void dijkstra(int s)
+void dijkstra(int s, vector< pair<int,int> > adj_list[], int V, int* dist, int* prev)
 {
     // Initialize priority queue
     set< pair<int,int> > pq;
@@ -53,45 +47,49 @@ void dijkstra(int s)
     }
 }
 
-void get_sp(int s, int d)
+void get_sp(int s, int d, int prev[], stack<int>* path)
 {
-    for(int i=d; i != -1; i = prev[i]) path.push(i);
+    for(int i=d; i != -1; i = prev[i]) path->push(i);
 }
 
 int main()
 {
-    V = 4;
-    adj_list[0].push_back(make_pair(1,1));
-    adj_list[0].push_back(make_pair(2,3));
-    adj_list[1].push_back(make_pair(0,1));
-    adj_list[1].push_back(make_pair(2,1));
-    adj_list[1].push_back(make_pair(3,4));
-    adj_list[2].push_back(make_pair(0,3));
-    adj_list[2].push_back(make_pair(1,1));
-    adj_list[2].push_back(make_pair(3,1));
-    adj_list[3].push_back(make_pair(1,4));
-    adj_list[3].push_back(make_pair(2,1));
+    vector< pair<int,int> > adj[max_v];
+    int distance[max_v];
+    int previous[max_v];
+    stack<int> path;
+    int num_vertices = 4;
+    adj[0].push_back(make_pair(1,1));
+    adj[0].push_back(make_pair(2,3));
+    adj[1].push_back(make_pair(0,1));
+    adj[1].push_back(make_pair(2,1));
+    adj[1].push_back(make_pair(3,4));
+    adj[2].push_back(make_pair(0,3));
+    adj[2].push_back(make_pair(1,1));
+    adj[2].push_back(make_pair(3,1));
+    adj[3].push_back(make_pair(1,4));
+    adj[3].push_back(make_pair(2,1));
     
     int s=0,d=3;
-    dijkstra(s);
-    get_sp(s,d);
+    dijkstra(s, adj, num_vertices, distance, previous);
+    get_sp(s, d, previous, &path);
     while(!path.empty())
     {
         printf("%d ",path.top());
         path.pop();
     }
     printf("\n");
-    printf("%d\n",dist[d]);
+    printf("%d\n",distance[d]);
     
     s=1,d=3;
-    dijkstra(s);
-    get_sp(s,d);
+    dijkstra(s, adj, num_vertices, distance, previous);
+    get_sp(s, d, previous, &path);
     while(!path.empty())
     {
         printf("%d ",path.top());
         path.pop();
     }
     printf("\n");
-    printf("%d\n",dist[d]);
+    printf("%d\n",distance[d]);
     return 0;
 }
