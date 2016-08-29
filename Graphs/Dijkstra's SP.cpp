@@ -44,8 +44,8 @@ void dijkstra(int s, int V, vector< pair<int,int> > adj_list[], int* dist, int* 
         dist[u] = x.first;
         for(vector< pair<int,int> >::iterator it=adj_list[u].begin(); it != adj_list[u].end(); ++it)
         {
-            int ver = it->first;
-            int cost = it->second;
+            int ver = it->second;
+            int cost = it->first;
             if(dist[u]+cost < dist[ver])
             {
                 pq.erase(make_pair(dist[ver],ver));
@@ -70,15 +70,15 @@ int main()
     stack<int> path;
     int num_vertices = 4;
     adj[0].push_back(make_pair(1,1));
-    adj[0].push_back(make_pair(2,3));
-    adj[1].push_back(make_pair(0,1));
-    adj[1].push_back(make_pair(2,1));
-    adj[1].push_back(make_pair(3,4));
-    adj[2].push_back(make_pair(0,3));
+    adj[0].push_back(make_pair(3,2));
+    adj[1].push_back(make_pair(1,0));
+    adj[1].push_back(make_pair(1,2));
+    adj[1].push_back(make_pair(4,3));
+    adj[2].push_back(make_pair(3,0));
     adj[2].push_back(make_pair(1,1));
-    adj[2].push_back(make_pair(3,1));
-    adj[3].push_back(make_pair(1,4));
-    adj[3].push_back(make_pair(2,1));
+    adj[2].push_back(make_pair(1,3));
+    adj[3].push_back(make_pair(4,1));
+    adj[3].push_back(make_pair(1,2));
     
     int s=0,d=3;
     dijkstra(s, num_vertices, adj, distance, previous);
