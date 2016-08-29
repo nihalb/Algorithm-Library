@@ -9,7 +9,17 @@ using namespace std;
 const int inf = 1000000000;
 const int max_v = 100000+5;
 
-void dijkstra(int s, vector< pair<int,int> > adj_list[], int V, int* dist, int* prev)
+/*
+Input:
+s -> Source Vertex
+V -> Number of Vertices
+adj_list -> Adjacency List of Graph
+
+Output:
+dist -> Distance array
+prev -> Previous array
+*/
+void dijkstra(int s, int V, vector< pair<int,int> > adj_list[], int* dist, int* prev)
 {
     // Initialize priority queue
     set< pair<int,int> > pq;
@@ -71,7 +81,7 @@ int main()
     adj[3].push_back(make_pair(2,1));
     
     int s=0,d=3;
-    dijkstra(s, adj, num_vertices, distance, previous);
+    dijkstra(s, num_vertices, adj, distance, previous);
     get_sp(s, d, previous, &path);
     while(!path.empty())
     {
@@ -82,7 +92,7 @@ int main()
     printf("%d\n",distance[d]);
     
     s=1,d=3;
-    dijkstra(s, adj, num_vertices, distance, previous);
+    dijkstra(s, num_vertices, adj, distance, previous);
     get_sp(s, d, previous, &path);
     while(!path.empty())
     {
